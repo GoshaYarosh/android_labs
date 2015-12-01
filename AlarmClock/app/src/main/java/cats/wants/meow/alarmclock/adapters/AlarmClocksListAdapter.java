@@ -10,43 +10,37 @@ import android.widget.TextView;
 import java.util.List;
 
 import cats.wants.meow.alarmclock.R;
-import cats.wants.meow.alarmclock.models.AlarmClock;
+import cats.wants.meow.alarmclock.models.AlarmClock.AlarmClock;
 
 public class AlarmClocksListAdapter extends ArrayAdapter<AlarmClock> {
 
-    private final Activity activity;
-    private final List<AlarmClock> alarmClocks;
+    static class ViewHolder {
+
+        public TextView nameTextView;
+        public TextView timeTextView;
+        public ViewHolder(View view) {
+            this.nameTextView = (TextView)view.findViewById(R.id.name);
+            this.timeTextView = (TextView)view.findViewById(R.id.time);
+        }
+
+    }
 
     public AlarmClocksListAdapter(Activity activity, List<AlarmClock> alarmClocks) {
         super(activity, R.layout.listitem_alarm_clock, alarmClocks);
-        this.activity = activity;
-        this.alarmClocks = alarmClocks;
-    }
-
-    static class ViewHolder {
-        public TextView nameTextView;
-        public TextView timeTextView;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View alarmClockView = convertView;
-        ViewHolder viewHolder;
-
+    public View getView(int position, View alarmClockView, ViewGroup parent) {
         if (alarmClockView == null) {
+            Activity activity = (Activity)this.getContext();
             LayoutInflater inflater = activity.getLayoutInflater();
             alarmClockView = inflater.inflate(R.layout.listitem_alarm_clock, null, false);
-            viewHolder = new ViewHolder();
-            viewHolder.nameTextView = (TextView)alarmClockView.findViewById(R.id.name);
-            viewHolder.timeTextView = (TextView)alarmClockView.findViewById(R.id.time);
-            alarmClockView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder)alarmClockView.getTag();
+            alarmClockView.setTag(new ViewHolder(alarmClockView));
         }
 
-        AlarmClock alarmClock = this.alarmClocks.get(position);
+        AlarmClock alarmClock = this.getItem(position);
+        ViewHolder viewHolder = (ViewHolder)alarmClockView.getTag();
         viewHolder.nameTextView.setText(alarmClock.getName());
-
         return alarmClockView;
     }
 }

@@ -1,4 +1,4 @@
-package cats.wants.meow.alarmclock.db;
+package cats.wants.meow.alarmclock.models.AlarmClock;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
@@ -6,12 +6,10 @@ import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 import java.util.List;
 
-import cats.wants.meow.alarmclock.models.AlarmClock;
+public class AlarmClockManager extends BaseDaoImpl<AlarmClock, Integer> {
 
-public class AlarmClockDAO extends BaseDaoImpl<AlarmClock, Integer> {
-
-    public AlarmClockDAO(ConnectionSource connectionSource,
-                         Class<AlarmClock> dataClass) throws SQLException {
+    public AlarmClockManager(ConnectionSource connectionSource,
+                             Class<AlarmClock> dataClass) throws SQLException {
         super(connectionSource, dataClass);
     }
 

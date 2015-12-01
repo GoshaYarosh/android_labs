@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/song_file_name"
+        android:layout_weight="0.8"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="some song name"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/play_song_button"
+        android:focusable="false"
+        android:layout_weight="0.1"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:text=">" />
+
+    <Button
+        android:id="@+id/stop_song_button"
+        android:focusable="false"
+        android:layout_weight="0.1"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:text="_" />
+
+</LinearLayout>
