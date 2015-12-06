@@ -10,12 +10,16 @@ public class Song {
 
     private final File songFile;
 
+    public Song(String songFilePath) {
+        this.songFile = new File(songFilePath);
+    }
+
     public Song(File songFile) {
         this.songFile = songFile;
     }
 
     public String getName() {
-        return this.songFile.getName();
+        return this.songFile.getName().replaceAll(".mp3", "");
     }
 
     public String getPath() {

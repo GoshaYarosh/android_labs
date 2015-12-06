@@ -16,7 +16,7 @@ import cats.wants.meow.alarmclock.models.AlarmClock.AlarmClockManager;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "alarm_clock_app.db";
     private static final String TAG = DatabaseHelper.class.getSimpleName();
 
@@ -28,8 +28,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, AlarmClock.class);
-            AlarmClockFactory.createAlarmClock();
-            AlarmClockFactory.createAlarmClock();
         }
         catch (SQLException e) {
             Log.e(TAG, "Error creating db: " + DATABASE_NAME);

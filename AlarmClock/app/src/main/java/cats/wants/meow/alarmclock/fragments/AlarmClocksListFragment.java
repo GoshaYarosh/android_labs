@@ -1,5 +1,6 @@
 package cats.wants.meow.alarmclock.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.gesture.Gesture;
@@ -30,16 +31,31 @@ import cats.wants.meow.alarmclock.models.AlarmClock.AlarmClockFactory;
 
 public class AlarmClocksListFragment extends Fragment {
 
-    public static final String ALARM_CLOCK_ID = "cat.wants.meow.app.ALARM_CLOCK";
+    public static int CREATE_ALARM_CLOCK = 1;
+    public static int UPDATE_ALARM_CLOCK = 2;
+    public static final String ALARM_CLOCK = "cat.wants.meow.app.ALARM_CLOCK";
+    public static final String IS_ALARM_CLOCK_NEW = "cat.wants.meow.app.IS_ALARM_CLOCK_NEW";
 
     public AlarmClocksListFragment() {
 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            ListView alarmClocksListView = (ListView)this.getView().findViewById(R.id.alarm_clocks_list_view);
+            List<AlarmClock> alarmClocks= AlarmClock.getAlarmClockManager().getAllAlarmClocks();
+            alarmClocksListView.setAdapter(new AlarmClocksListAdapter(this.getActivity(), alarmClocks));
+        } catch (SQLException e) {
+            Log.e(this.getClass().getSimpleName(), "Error: " + e.getMessage());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final Context context = this.getActivity();
+        final Activity context = this.getActivity();
         View view = inflater.inflate(R.layout.fragment_alarm_clocks_list, container, false);
         Button addAlarmClockButton = (Button)view.findViewById(R.id.add_alarm_clock_button);
         ListView alarmClocksListView = (ListView)view.findViewById(R.id.alarm_clocks_list_view);
@@ -60,19 +76,19 @@ public class AlarmClocksListFragment extends Fragment {
                 AlarmClock alarmClock = (AlarmClock) alarmClocksList.getItem(position);
 
                 Intent intent = new Intent(context, AlarmClockDetailActivity.class);
-                intent.putExtra(ALARM_CLOCK_ID, alarmClock.getId());
-                startActivity(intent);
+                intent.putExtra(ALARM_CLOCK, AlarmClock.toBundle(alarmClock));
+                intent.putExtra(IS_ALARM_CLOCK_NEW, false);
+                context.startActivity(intent);
             }
         });
 
         addAlarmClockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlarmClock alarmClock = AlarmClockFactory.createAlarmClock();
-
                 Intent intent = new Intent(context, AlarmClockDetailActivity.class);
-                intent.putExtra(ALARM_CLOCK_ID, alarmClock.getId());
-                startActivity(intent);
+                intent.putExtra(ALARM_CLOCK, AlarmClock.toBundle(new AlarmClock()));
+                intent.putExtra(IS_ALARM_CLOCK_NEW, true);
+                context.startActivity(intent);
             }
         });
 
@@ -87,11 +103,10 @@ public class AlarmClocksListFragment extends Fragment {
                     Prediction prediction = predictions.get(0);
                     if (prediction.score > 1.0) {
                         if (prediction.name.equals("Add alarm clock")) {
-                            AlarmClock alarmClock = AlarmClockFactory.createAlarmClock();
-
                             Intent intent = new Intent(context, AlarmClockDetailActivity.class);
-                            intent.putExtra(ALARM_CLOCK_ID, alarmClock.getId());
-                            startActivity(intent);
+                            intent.putExtra(ALARM_CLOCK, AlarmClock.toBundle(new AlarmClock()));
+                            intent.putExtra(IS_ALARM_CLOCK_NEW, true);
+                            context.startActivity(intent);
                         }
                     }
                 }

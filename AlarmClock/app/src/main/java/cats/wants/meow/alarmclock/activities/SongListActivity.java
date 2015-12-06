@@ -24,37 +24,10 @@ public class SongListActivity extends ListActivity {
 
     public final static String SONG_NAME = "cat.wants.meow.app.SONG_NAME";
 
-    private AlarmClock alarmClock;
-
-    protected void getAlarmClockModel() throws RuntimeException {
-        int alarmClockId = getIntent().getIntExtra(AlarmClocksListFragment.ALARM_CLOCK_ID, -1);
-        if (alarmClockId == -1) {
-            throw new RuntimeException("Can't get alarm clock id from intent");
-        }
-
-        try {
-            alarmClock = AlarmClock.getAlarmClockManager().getAlarmClock(alarmClockId);
-        }
-        catch(SQLException ex) {
-            Log.e(this.getClass().getSimpleName(), "Error: " + ex.getMessage());
-        }
-    }
-
-    protected void updateAlarmClockModel(Song song) {
-        try {
-            alarmClock.setSong(song);
-            AlarmClock.getAlarmClockManager().update(alarmClock);
-        }
-        catch (SQLException ex) {
-            Log.e(this.getClass().getSimpleName(), "Error: " + ex.getMessage());
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
-        getAlarmClockModel();
 
         List<Song> songs = Song.enumerateSongs(new File(Song.SONGS_DIRECTORY));
         setListAdapter(new SongListAdapter(this, songs));
@@ -63,13 +36,13 @@ public class SongListActivity extends ListActivity {
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListAdapter songList = ((ListView)parent).getAdapter();
-                Song song = (Song)songList.getItem(position);
-                updateAlarmClockModel(song);
+                ListAdapter songList = ((ListView) parent).getAdapter();
+                Song song = (Song) songList.getItem(position);
 
-                Intent intent = context.getIntent();
-                intent.setClass(context, AlarmClockDetailActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra(SONG_NAME, song.getPath());
+                context.setResult(RESULT_OK, intent);
+                context.finish();
             }
         });
     }

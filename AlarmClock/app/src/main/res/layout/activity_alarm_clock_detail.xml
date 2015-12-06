@@ -112,7 +112,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textSize="30sp"/>
 
                     <Button
                         android:id="@+id/choose_song_button"
@@ -128,16 +130,17 @@
             </LinearLayout>
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:text="Опробовать"
-                android:textSize="30sp" />
-
-            <Button
                 android:id="@+id/save_button"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:text="Сохранить"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/delete_button"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Удалить"
                 android:textSize="30sp" />
 
         </LinearLayout>
